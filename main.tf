@@ -25,7 +25,7 @@ data "aws_vpc" "project_vpc" {
 
 resource "aws_subnet" "project_subnet" {
   vpc_id     = data.aws_vpc.project_vpc.id
-  cidr_block = "10.0.1.0/24"
+  cidr_block = "10.0.5.0/24"
 }
 
 resource "aws_security_group" "allow_ssh_to_ec2" {
@@ -162,13 +162,13 @@ resource "aws_elasticache_cluster" "cache" {
 
 resource "aws_subnet" "project_subnet_2" {
   vpc_id            = data.aws_vpc.project_vpc.id
-  cidr_block        = "10.0.2.0/24"
+  cidr_block        = "10.0.6.0/24"
   availability_zone = "eu-west-3a"
 }
 
 resource "aws_subnet" "project_subnet_3" {
   vpc_id            = data.aws_vpc.project_vpc.id
-  cidr_block        = "10.0.3.0/24"
+  cidr_block        = "10.0.7.0/24"
   availability_zone = "eu-west-3b"
 }
 
