@@ -13,25 +13,25 @@ provider "aws" {
   region = "eu-west-3"
 }
 
-#resource "aws_vpc" "project_vpc" {
-#  cidr_block = "10.0.0.0/16"
-#  enable_dns_hostnames = true
-#
-#}
+resource "aws_vpc" "project_vpc" {
+  cidr_block = "10.0.0.0/16"
+  enable_dns_hostnames = true
 
-data "aws_vpc" "project_vpc" {
-  default = true
 }
 
+#data "aws_vpc" "project_vpc" {
+#  default = true
+#}
+
 resource "aws_subnet" "project_subnet" {
-  vpc_id     = data.aws_vpc.project_vpc.id
+  vpc_id     = aws_vpc.project_vpc.id
   cidr_block = "10.0.5.0/24"
 }
 
 resource "aws_security_group" "allow_ssh_to_ec2" {
   name        = "iit_allow_ssh_to_ec2"
   description = "Allow SSH inbound traffic"
-  vpc_id      = data.aws_vpc.project_vpc.id
+  vpc_id      = aws_vpc.project_vpc.id
 
   ingress {
     from_port        = 22
@@ -56,7 +56,7 @@ resource "aws_security_group" "allow_ssh_to_ec2" {
 
 resource "aws_security_group" "ec2_sg" {
   name   = "iit_ec2_sg"
-  vpc_id = data.aws_vpc.project_vpc.id
+  vpc_id = aws_vpc.project_vpc.id
 
   ingress {
     from_port        = 0
@@ -96,7 +96,7 @@ resource "aws_instance" "tunnel_ec2" {
 
 resource "aws_security_group" "ec2_to_elasticache" {
   name   = "iit_ec2_to_elasticache"
-  vpc_id = data.aws_vpc.project_vpc.id
+  vpc_id = aws_vpc.project_vpc.id
 
   ingress {
     from_port        = 11211
@@ -121,7 +121,7 @@ resource "aws_security_group" "ec2_to_elasticache" {
 
 resource "aws_security_group" "ec2_to_docdb" {
   name   = "iit_ec2_to_docdb"
-  vpc_id = data.aws_vpc.project_vpc.id
+  vpc_id = aws_vpc.project_vpc.id
 
   ingress {
     from_port        = 27017
@@ -161,13 +161,13 @@ resource "aws_elasticache_cluster" "cache" {
 }
 
 resource "aws_subnet" "project_subnet_2" {
-  vpc_id            = data.aws_vpc.project_vpc.id
+  vpc_id            = aws_vpc.project_vpc.id
   cidr_block        = "10.0.6.0/24"
   availability_zone = "eu-west-3a"
 }
 
 resource "aws_subnet" "project_subnet_3" {
-  vpc_id            = data.aws_vpc.project_vpc.id
+  vpc_id            = aws_vpc.project_vpc.id
   cidr_block        = "10.0.7.0/24"
   availability_zone = "eu-west-3b"
 }
